@@ -1,41 +1,54 @@
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Main {
+	
+	static ArrayList<Traveller> allTravellers = new ArrayList<>();
+	public static void main(String[] args) throws IOException {
 
-	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		System.out.println("Welcome to Automated Travelling Assistant!");
 
-		int[] terms_vector = {2, 5, 6, 0, 1, 8, 9, 9, 9, 11};
-		int[] terms_vector2 = {9, 0, 0, 2, 6, 4, 3, 2, 30, 11};
-		int[] terms_vector3 = {1, 2, 3, 4, 5, 6, 7 ,8, 9, 15};
+		//initialize first user
+		int age;
+		Traveller traveller;
+		System.out.print("Provide your age: ");
+		age = in.nextInt();
+		//check age
+		while (age < 16 || age > 130) {
+			System.out.println("Invalid age!");
+			System.out.print("Provide your age: ");
+			age = in.nextInt();
+		}
+		if (age >= 16 && age <= 25) {
+			traveller = new YoungTraveller(age);
 
-		int[] geodesic_vector = {0, 0};
+		} else if (age > 25 && age <= 60) {
+			traveller = new MiddleTraveller(age);
 
-		City city = new City(terms_vector, geodesic_vector, "Athens");
-		City city2 = new City(terms_vector2, geodesic_vector, "Paris");
-		City city3 = new City(terms_vector3, geodesic_vector, "Wuakanda");
+		}else {
+			traveller = new ElderTraveller(age);
 
+		}
+		allTravellers.add(traveller);
+		System.out.print("Provide your city of residence: ");
+		in.nextLine();
+		String city = in.nextLine();
 
-		ArrayList<City> cities = new ArrayList<>();
-		cities.add(city);
-		cities.add(city2);
-		cities.add(city3);
+		traveller.setGeodesic_pref(City.retrieveData(city, "7ee00d1719bab23e58e8acfad960fa89"));
+		System.out.println(traveller.getGeodesic_pref()[0]);
 
-		//broken
-		YoungTraveller letzis = new YoungTraveller(16);
-		letzis.setTerms_pref(new int[]{1, 2, 3, 4, 5, 6, 7 ,8, 9, 15});
-
-		//broken
-		MiddleTraveller lezos = new MiddleTraveller(25);
-		lezos.setTerms_pref(new int[]{2, 5, 6, 0, 1, 8, 9, 9, 9, 11	});
-
-		//working
-		ElderTraveller dimitris = new ElderTraveller(35);
-		dimitris.setTerms_pref(new int[]{9, 0, 0, 2, 6, 4, 3, 2, 8, 11});
-
-
-		System.out.println("letzis: " + letzis.compare_cities(cities).getName());
-		System.out.println("lezos: " + lezos.compare_cities(cities).getName());
-		System.out.println("dimitris: " + dimitris.compare_cities(cities).getName());
+		System.out.println("Option 1\n" + "Option 2\n" + "Option 3\n");
+		int choice = in.nextInt();
+		switch (choice) {
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+		}
 	}
 
 }
