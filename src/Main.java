@@ -36,8 +36,11 @@ public class Main {
 		in.nextLine();
 		String city = in.nextLine();
 
-		traveller.setGeodesic_pref(City.retrieveData(city, "7ee00d1719bab23e58e8acfad960fa89"));
+		traveller.setGeodesic_pref(City.retrieveUnknownGeo(city, "7ee00d1719bab23e58e8acfad960fa89"));
 		System.out.println(traveller.getGeodesic_pref()[0]);
+		traveller.setTerms_pref();
+		
+		City.calculateTerms("Moscow","7ee00d1719bab23e58e8acfad960fa89");
 
 		System.out.println("Option 1\n" + "Option 2\n" + "Option 3\n");
 		int choice = in.nextInt();
