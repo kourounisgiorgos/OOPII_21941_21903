@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 abstract class Traveller {
-
+	
+	Scanner r = new Scanner(System.in);
 	protected int[] terms_pref = new int[10];
 	protected double[] geodesic_pref = new double[2];
 	protected int age;
@@ -13,8 +15,48 @@ abstract class Traveller {
 		return terms_pref;
 	}
 
-	public void setTerms_pref(int[] terms_pref) {
-		this.terms_pref = terms_pref;
+	public void setTerms_pref() {
+		System.out.println("Cafes - 0/10");
+		terms_pref[0] = checkInput(r.nextInt());
+		
+		
+		System.out.println("Sea - 0/10");
+		terms_pref[1] = checkInput(r.nextInt());
+				
+		System.out.println("Museums - 0/10");
+		terms_pref[2] = checkInput(r.nextInt());
+				
+		System.out.println("Restaurant - 0/10");
+		terms_pref[3] = checkInput(r.nextInt());
+				
+		System.out.println("Stadium - 0/10");
+		terms_pref[4] = checkInput(r.nextInt());
+				
+		System.out.println("Parks - 0/10");
+		terms_pref[5] = checkInput(r.nextInt());
+		
+		System.out.println("Hot weather - 0/10");
+		terms_pref[6] = checkInput(r.nextInt());
+		
+		System.out.println("Sports - 0/10");
+		terms_pref[7] = checkInput(r.nextInt());
+		
+		System.out.println("Music - 0/10");
+		terms_pref[8] = checkInput(r.nextInt());
+		
+		System.out.println("Technology - 0/10");
+		terms_pref[9] = checkInput(r.nextInt());	
+		
+	}
+	
+	private int checkInput(int input) {
+		
+		while(input < 0 || input > 10) {
+			System.out.println("Wrong input, try again!");
+			input = r.nextInt();
+		}
+		return input;
+		
 	}
 
 	public double[] getGeodesic_pref() {
@@ -114,3 +156,4 @@ abstract class Traveller {
 	}
 	
 }
+
