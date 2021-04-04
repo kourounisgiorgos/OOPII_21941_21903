@@ -15,12 +15,12 @@ public class City {
 	String country;
 	private int[] terms_vector = new int[10];
 	private double[] geodesic_vector = new double[2];
-	
-	public City(int[] terms_vector, double[] geodesic_vector, String name) {
+
+	public City(String name) {
 		super();
 		this.name = name;
-		this.terms_vector = terms_vector;
-		this.geodesic_vector = geodesic_vector;
+		this.terms_vector = null;
+		this.geodesic_vector = null;
 		
 	}
 
@@ -72,8 +72,7 @@ public class City {
 		return bestTraveller;
 	}
 
-	public void retrieveKnownGeo(String appid) throws IOException {
-
+	public void retrieveKnownGeo(String appid) throws IOException { //retrieve Geodesic info when the city name is known
 		ObjectMapper mapper = new ObjectMapper();
 		OpenWeatherMap weather_obj = mapper.readValue(new URL("http://api.openweathermap.org/data/2.5/weather?q="+this.name+"&APPID="+appid+""), OpenWeatherMap.class);
 
@@ -82,7 +81,7 @@ public class City {
 
 	}
 
-	public static double[] retrieveUnknownGeo(String city, String appid) throws IOException {
+	public static double[] retrieveUnknownGeo(String city, String appid) throws IOException { //retrieve Geodesic info when the city name is unknown
 		ObjectMapper mapper = new ObjectMapper();
 		OpenWeatherMap weather_obj = mapper.readValue(new URL("http://api.openweathermap.org/data/2.5/weather?q="+city+"&APPID="+appid+""), OpenWeatherMap.class);
 		double[] tempGeo = {weather_obj.getCoord().getLat(), weather_obj.getCoord().getLon()};
@@ -90,35 +89,37 @@ public class City {
 		return tempGeo;
 	}
 	
-	public void retrieveTemperature(String appid) throws JsonParseException, JsonMappingException, MalformedURLException, IOException {
+	public int retrieveTemperature(String city, String appid) throws JsonParseException, JsonMappingException, MalformedURLException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-		OpenWeatherMap weather_obj = mapper.readValue(new URL("http://api.openweathermap.org/data/2.5/weather?q="+this.name+"&APPID="+appid+""), OpenWeatherMap.class);
-		
-		double celsius = weather_obj.getMain().getTemp()-273.15;
+		OpenWeatherMap weather_obj = mapper.readValue(new URL("http://api.openweathermap.org/data/2.5/weather?q="+city+"&APPID="+appid+""), OpenWeatherMap.class);
+		int temperature;
+
+		double celsius = weather_obj.getMain().getTemp()-273.15; //conversion from kelvin to celsius
 		if(celsius >= 40) {
-			this.getTerms_vector()[6] = 10;
+			temperature = 10;
 		}else if(celsius >= 35) {
-			this.getTerms_vector()[6] = 9;
+			temperature = 9;
 		}else if(celsius >= 30) {
-			this.getTerms_vector()[6] = 8;
+			temperature = 8;
 		}else if(celsius >= 25) {
-			this.getTerms_vector()[6] = 7;
+			temperature = 7;
 		}else if(celsius >= 20) {
-			this.getTerms_vector()[6] = 6;
+			temperature = 6;
 		}else if(celsius >= 15) {
-			this.getTerms_vector()[6] = 5;
+			temperature = 5;
 		}else if(celsius >= 10) {
-			this.getTerms_vector()[6] = 4;
+			temperature = 4;
 		}else if(celsius >= 5) {
-			this.getTerms_vector()[6] = 3;
+			temperature = 3;
 		}else if(celsius >= 0) {
-			this.getTerms_vector()[6] = 2;
+			temperature = 2;
 		}else if(celsius >= -5) {
-			this.getTerms_vector()[6] = 1;
+			temperature = 1;
 		}else {
-			this.getTerms_vector()[6] = 0;
+			temperature = 0;
 		}
-		System.out.println(this.getTerms_vector()[6]);
+
+		return temperature;
 	}
 	
 	public static int[] calculateTerms(String city,String appid) throws JsonParseException, JsonMappingException, MalformedURLException, IOException {
@@ -126,24 +127,20 @@ public class City {
 		ObjectMapper mapper = new ObjectMapper(); 
 		OpenWeatherMap weather_obj = mapper.readValue(new URL("http://api.openweathermap.org/data/2.5/weather?q="+city+","+"&APPID="+appid+""), OpenWeatherMap.class);
 		MediaWiki mediaWiki_obj =  mapper.readValue(new URL("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&titles="+city+"&format=json&formatversion=2"),MediaWiki.class);
-		
+		City thisCity = new City(city);
+
 		terms[0] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(),"cafe");
 		terms[1] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(),"sea");
 		terms[2] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(),"museum");
 		terms[3] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(),"restaurant");
 		terms[4] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(),"stadium");
 		terms[5] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(),"park");
-		terms[6] = 0;
+		terms[6] = thisCity.retrieveTemperature(city,appid);
 		terms[7] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(),"sports");
 		terms[8] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(),"music");
 		terms[9] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(),"technology");
 		
-		for(int i=0;i<10;i++) {
-			System.out.println(terms[i]);
-		}
-		
 		return terms;
-		
 	}
 	
 	private static int countCriterionfCity(String cityArticle, String criterion) {

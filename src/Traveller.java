@@ -124,7 +124,7 @@ abstract class Traveller {
 		return probableCity;
 	}
 	
-	public City[] compareCities(ArrayList<City> cities , int x) {
+	public void compareCities(ArrayList<City> cities , int x) {
 		if(x > cities.size()) {
 			x = cities.size();
 		}
@@ -137,8 +137,11 @@ abstract class Traveller {
 			tempCities.remove(bestCities[i]);
 			i++;
 		}
-		
-		return bestCities;
+
+		System.out.println("Your Top "+x+" cities:");
+		for (int j = 0; j < x; j++) {
+			System.out.println(bestCities[j].name);
+		}
 	}
 	
 
