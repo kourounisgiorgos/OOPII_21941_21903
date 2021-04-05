@@ -138,10 +138,11 @@ abstract class Traveller {
 			i++;
 		}
 
-		System.out.println("Your Top "+x+" cities:");
+		System.out.print("Your Top "+x+" cities: ");
 		for (int j = 0; j < x; j++) {
-			System.out.println(bestCities[j].name);
+			System.out.print(bestCities[j].name + " ");
 		}
+		System.out.println("");
 	}
 	
 

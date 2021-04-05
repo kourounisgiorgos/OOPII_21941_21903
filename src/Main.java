@@ -60,7 +60,7 @@ public class Main {
 		traveller.setTerms_pref();
 		System.out.print("Your best match: ");
 		System.out.println(traveller.compareCities(allCities).name);
-		traveller.compareCities(allCities,2);
+		traveller.compareCities(allCities,3);
 
 	}
 
