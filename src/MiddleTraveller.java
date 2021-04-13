@@ -3,7 +3,6 @@ public class MiddleTraveller extends Traveller {
 
 	public MiddleTraveller(int age) {
 		super(age);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
