@@ -18,8 +18,7 @@ abstract class Traveller {
 	public void setTerms_pref() {
 		System.out.println("Cafes - 0/10");
 		terms_pref[0] = checkInput(r.nextInt());
-		
-		
+
 		System.out.println("Sea - 0/10");
 		terms_pref[1] = checkInput(r.nextInt());
 				
@@ -45,8 +44,7 @@ abstract class Traveller {
 		terms_pref[8] = checkInput(r.nextInt());
 		
 		System.out.println("Technology - 0/10");
-		terms_pref[9] = checkInput(r.nextInt());	
-		
+		terms_pref[9] = checkInput(r.nextInt());
 	}
 	
 	private int checkInput(int input) {

@@ -61,7 +61,6 @@ public class Main {
 		System.out.print("Your best match: ");
 		System.out.println(traveller.compareCities(allCities).name);
 		traveller.compareCities(allCities,3);
-
 	}
 
 }

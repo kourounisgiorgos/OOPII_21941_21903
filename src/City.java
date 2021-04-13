@@ -1,13 +1,8 @@
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import weather.OpenWeatherMap;
 import wikipedia.MediaWiki;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class City {
@@ -83,7 +78,7 @@ public class City {
 				double[] tempGeo = { weather_obj.getCoord().getLat(), weather_obj.getCoord().getLon() };
 				return tempGeo;
 			}catch(Exception e) {
-				System.out.println("City " + city + " doesnt exist");
+				System.out.println("City " + city + " doesn't exist");
 				System.out.println("Try inserting an existing city:");
 				city = scan.nextLine();
 				continue;
@@ -150,16 +145,16 @@ public class City {
 								+ "&format=json&formatversion=2"), MediaWiki.class);
 				City thisCity = new City(city);
 
-				terms[0] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "cafe");
-				terms[1] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "sea");
-				terms[2] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "museum");
-				terms[3] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "restaurant");
-				terms[4] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "stadium");
-				terms[5] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "park");
+				terms[0] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "cafe");
+				terms[1] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "sea");
+				terms[2] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "museum");
+				terms[3] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "restaurant");
+				terms[4] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "stadium");
+				terms[5] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "park");
 				terms[6] = thisCity.retrieveTemperature(city, appid);
-				terms[7] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "sports");
-				terms[8] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "music");
-				terms[9] = countCriterionfCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "technology");
+				terms[7] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "sports");
+				terms[8] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "music");
+				terms[9] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "technology");
 
 				return terms;
 			}catch(Exception e) {
@@ -173,7 +168,7 @@ public class City {
 		
 	}
 
-	private static int countCriterionfCity(String cityArticle, String criterion) {
+	private static int countCriterionCity(String cityArticle, String criterion) {
 		cityArticle = cityArticle.toLowerCase();
 		int index = cityArticle.indexOf(criterion);
 		int count = 0;
