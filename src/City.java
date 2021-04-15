@@ -15,7 +15,6 @@ public class City {
 	private double[] geodesic_vector = new double[2];
 
 	public City(String name) {
-		super();
 		this.name = name;
 		this.terms_vector = null;
 		this.geodesic_vector = null;

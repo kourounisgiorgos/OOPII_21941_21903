@@ -9,6 +9,10 @@ abstract class Traveller {
 	protected double[] geodesic_pref = new double[2];
 	protected int age;
 
+	public Traveller(int age) {
+		this.age = age;
+	}
+
 	public abstract double calculateSimilarity(City curCity);
 
 	public int[] getTerms_pref() {
@@ -63,12 +67,6 @@ abstract class Traveller {
 
 	public void setGeodesic_pref(double[] geodesic_pref) {
 		this.geodesic_pref = geodesic_pref;
-	}
-
-	public Traveller(int age) {
-		super();
-		this.age = age;
-
 	}
 	
 	public double similarityGeodesicVector(City myCity) {
