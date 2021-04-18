@@ -9,8 +9,8 @@ public class City {
 	
 	private static Scanner scan = new Scanner(System.in);
 
-	String name;
-	String country;
+	private String name;
+	private String country;
 	private int[] terms_vector = new int[10];
 	private double[] geodesic_vector = new double[2];
 
@@ -122,7 +122,7 @@ public class City {
 
 				return temperature;
 			}catch(Exception e) {
-				System.out.println("City + " + city + " doesnt exist");
+				System.out.println("City " + city + " doesnt exist");
 				System.out.println("Try inserting an existing city");
 				city = scan.nextLine();
 				continue;
@@ -157,7 +157,7 @@ public class City {
 
 				return terms;
 			}catch(Exception e) {
-				System.out.println("City + " + city + " doesnt exist");
+				System.out.println("City " + city + " doesnt exist");
 				System.out.println("Try inserting an existing city:");
 				city = scan.nextLine();
 				continue;

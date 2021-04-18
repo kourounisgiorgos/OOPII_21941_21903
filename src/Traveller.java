@@ -1,16 +1,28 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+import java.util.*;
 
-abstract class Traveller {
+
+abstract class Traveller implements Comparable<Traveller> {
 	
 	Scanner r = new Scanner(System.in);
 	protected int[] terms_pref = new int[10];
 	protected double[] geodesic_pref = new double[2];
+	protected String name;
 	protected int age;
+	protected long timestamp;
+	protected String visit;
 
-	public Traveller(int age) {
+	public Traveller(String name, int age) {
+		this.name = name;
 		this.age = age;
+		this.timestamp = System.currentTimeMillis();
+	}
+
+	public String getVisit() {
+		return visit;
+	}
+
+	public void setVisit(String city) {
+		this.visit = city;
 	}
 
 	public abstract double calculateSimilarity(City curCity);
@@ -108,7 +120,7 @@ abstract class Traveller {
 		}else if(this instanceof ElderTraveller) {
 			p = 0.3;
 		}
-		
+
 		for(int i=0;i<cities.size();i++) {
 			res = p * this.calculateSimilarity(cities.get(i)) + (1 - p) * this.similarityGeodesicVector(cities.get(i));
 			if (max < res) {
@@ -117,16 +129,18 @@ abstract class Traveller {
 			}
 
 		}
+
+		this.visit = probableCity.getName();
 		return probableCity;
 	}
-	
+
 	public void compareCities(ArrayList<City> cities , int x) {
 		if(x > cities.size()) {
 			x = cities.size();
 		}
 		City[] bestCities = new City[x];
 		ArrayList<City> tempCities = new ArrayList<City>(cities);
-		
+
 		int i = 0;
 		while(i < x) {
 			bestCities[i] = compareCities(tempCities);
@@ -136,11 +150,10 @@ abstract class Traveller {
 
 		System.out.print("Your Top "+x+" cities: ");
 		for (int j = 0; j < x; j++) {
-			System.out.print(bestCities[j].name + " ");
+			System.out.print(bestCities[j].getName() + " ");
 		}
 		System.out.println("");
 	}
-	
 
 	public double calculateFreeTicket(City myCity) {
 		double p=0;
@@ -154,6 +167,47 @@ abstract class Traveller {
 		
 		return p * this.calculateSimilarity(myCity) + (1 - p) * this.similarityGeodesicVector(myCity);
 	}
+
+	public static void sortTravellers() {
+		ArrayList<Traveller> uniqueElements = new ArrayList<>();
+        
+        for(Traveller element: Main.allTravellers)
+        {
+            if(!uniqueElements.contains(element))
+                uniqueElements.add(element);
+        }
+        Collections.sort(uniqueElements);
+        for(int i=0;i<uniqueElements.size();i++) {
+        	System.out.println(uniqueElements.get(i).name + " " + uniqueElements.get(i).timestamp);
+        }
+	}
+
+	@Override
+    public boolean equals(Object o) { //needed for duplicate removal
+  
+        if (o == this) {
+            return true;
+        }
+  
+        if (!(o instanceof Traveller)) {
+            return false;
+        }
+          
+        Traveller c = (Traveller) o;
+          
+        return name.equals(c.name);
+    }
 	
+	@Override
+	public int compareTo(Traveller traveller) { //needed for sort
+		if(timestamp< traveller.timestamp) {
+
+			return -1;
+		}else if(timestamp> traveller.timestamp) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
 }
 

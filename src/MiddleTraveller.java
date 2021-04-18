@@ -1,8 +1,8 @@
 
 public class MiddleTraveller extends Traveller {
 
-	public MiddleTraveller(int age) {
-		super(age);
+	public MiddleTraveller(String name, int age) {
+		super(name, age);
 	}
 
 	@Override
