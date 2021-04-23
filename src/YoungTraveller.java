@@ -4,7 +4,10 @@ public class YoungTraveller extends Traveller {
 	public YoungTraveller(String name, int age) {
 		super(name, age);
 	}
-
+	
+	public YoungTraveller () {
+		super();
+	}
 	@Override
 	public double calculateSimilarity(City curCity) {
 		double result = 0;
@@ -31,5 +34,4 @@ public class YoungTraveller extends Traveller {
 		return result;
 	}
 	
-
 }
