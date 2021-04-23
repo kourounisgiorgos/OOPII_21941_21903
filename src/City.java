@@ -3,14 +3,21 @@ import weather.OpenWeatherMap;
 import wikipedia.MediaWiki;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Scanner;
 
 public class City {
 	
 	private static Scanner scan = new Scanner(System.in);
+	
 
 	private String name;
-	private String country;
 	private int[] terms_vector = new int[10];
 	private double[] geodesic_vector = new double[2];
 
@@ -18,6 +25,9 @@ public class City {
 		this.name = name;
 		this.terms_vector = null;
 		this.geodesic_vector = null;
+
+	}
+	public City() {
 
 	}
 
@@ -33,25 +43,25 @@ public class City {
 		return terms_vector;
 	}
 
-	public void setTerms_vector(int[] terms_vector) {
-		this.terms_vector = terms_vector;
+	public void setTerms_vector() {
+		this.terms_vector = calculateTerms(Main.appid);
+	}
+	
+	public void setTerms_vector(int [] termsVector) {
+		this.terms_vector = termsVector;
 	}
 
 	public double[] getGeodesic_vector() {
 		return geodesic_vector;
 	}
 
-	public void setGeodesic_vector(double[] geodesic_vector) {
-		this.geodesic_vector = geodesic_vector;
+	public void setGeodesic_vector() {
+		this.geodesic_vector = retrieveUnknownGeo(Main.appid);
+	}
+	public void setGeodesic_vector(double [] geoVector) {
+		this.geodesic_vector = geoVector;
 	}
 
-	public String getCountry() {
-		return country;
-	}
-
-	public void setCountry(String country) {
-		this.country = country;
-	}
 
 	public Traveller compareTravellers() {
 		Traveller bestTraveller = null;
@@ -69,29 +79,29 @@ public class City {
 		return bestTraveller;
 	}
 
-	public static double[] retrieveUnknownGeo(String city, String appid) { // retrieve Geodesic info 
+	private double[] retrieveUnknownGeo(String appid) { // retrieve Geodesic info 
 		ObjectMapper mapper = new ObjectMapper();
 		do {
 			try {
-				OpenWeatherMap weather_obj = mapper.readValue(new URL("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + appid + ""),OpenWeatherMap.class);
+				OpenWeatherMap weather_obj = mapper.readValue(new URL("http://api.openweathermap.org/data/2.5/weather?q=" + this.name + "&APPID=" + appid + ""),OpenWeatherMap.class);
 				double[] tempGeo = { weather_obj.getCoord().getLat(), weather_obj.getCoord().getLon() };
 				return tempGeo;
 			}catch(Exception e) {
-				System.out.println("City " + city + " doesn't exist");
+				System.out.println("City " + this.name + " doesn't exist");
 				System.out.println("Try inserting an existing city:");
-				city = scan.nextLine();
+				this.name = scan.nextLine();
 				continue;
-			}
+			}	
 		}while(true);
 		
 	}
 
-	public int retrieveTemperature(String city, String appid) {
+	private int retrieveTemperature(String appid) {
 		ObjectMapper mapper = new ObjectMapper();
 		do {
 			try {
 				OpenWeatherMap weather_obj = mapper.readValue(
-						new URL("http://api.openweathermap.org/data/2.5/weather?q=" + city + "&APPID=" + appid + ""),
+						new URL("http://api.openweathermap.org/data/2.5/weather?q=" + this.name + "&APPID=" + appid + ""),
 						OpenWeatherMap.class);
 				int temperature;
 
@@ -122,27 +132,26 @@ public class City {
 
 				return temperature;
 			}catch(Exception e) {
-				System.out.println("City " + city + " doesnt exist");
+				System.out.println("City " + this.name + " doesnt exist");
 				System.out.println("Try inserting an existing city");
-				city = scan.nextLine();
+				this.name = scan.nextLine();
 				continue;
 			}
 		}while(true);
 		
 	}
 
-	public static int[] calculateTerms(String city, String appid){
+	private int[] calculateTerms(String appid){
 		int[] terms = new int[10];
 		ObjectMapper mapper = new ObjectMapper();
 		do {
 			try {
 				OpenWeatherMap weather_obj = mapper.readValue(
-						new URL("http://api.openweathermap.org/data/2.5/weather?q=" + city + "," + "&APPID=" + appid + ""),
+						new URL("http://api.openweathermap.org/data/2.5/weather?q=" + this.name + "," + "&APPID=" + appid + ""),
 						OpenWeatherMap.class);
 				MediaWiki mediaWiki_obj = mapper
-						.readValue(new URL("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&titles=" + city
+						.readValue(new URL("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&titles=" + this.name
 								+ "&format=json&formatversion=2"), MediaWiki.class);
-				City thisCity = new City(city);
 
 				terms[0] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "cafe");
 				terms[1] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "sea");
@@ -150,16 +159,16 @@ public class City {
 				terms[3] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "restaurant");
 				terms[4] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "stadium");
 				terms[5] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "park");
-				terms[6] = thisCity.retrieveTemperature(city, appid);
+				terms[6] = retrieveTemperature(appid);
 				terms[7] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "sports");
 				terms[8] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "music");
 				terms[9] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "technology");
 
 				return terms;
 			}catch(Exception e) {
-				System.out.println("City " + city + " doesnt exist");
+				System.out.println("City " + this.name + " doesnt exist");
 				System.out.println("Try inserting an existing city:");
-				city = scan.nextLine();
+				this.name = scan.nextLine();
 				continue;
 			}
 		}while(true);
@@ -178,5 +187,90 @@ public class City {
 		}
 		return count;
 	}
-
+	
+	public static void writeToDB(City curCity) throws ClassNotFoundException{
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Connection con;
+		try {
+			con = DriverManager.getConnection("jdbc:oracle:thin:@oracle12c.hua.gr:1521:orcl","IT21941","otenet10");
+			Statement st = (Statement) con.createStatement();
+			st.executeUpdate("INSERT INTO Cities VALUES('" + curCity.getName() + "')");
+            st.executeUpdate("INSERT INTO Terms_Vector VALUES ("+curCity.getTerms_vector()[0]+","
+                    +curCity.getTerms_vector()[1]+","
+                    +curCity.getTerms_vector()[2]+","
+                    +curCity.getTerms_vector()[3]+","
+                    +curCity.getTerms_vector()[4]+","
+                    +curCity.getTerms_vector()[5]+","
+                    +curCity.getTerms_vector()[6]+","
+                    +curCity.getTerms_vector()[7]+","
+                    +curCity.getTerms_vector()[8]+","
+                    +curCity.getTerms_vector()[9]+",'"
+                    +curCity.getName()+"')");
+            st.executeUpdate("INSERT INTO Geo_Vector VALUES ("+curCity.getGeodesic_vector()[0]+","+curCity.getGeodesic_vector()[1]+",'" + curCity.getName()+"')");
+            con.close();
+		} catch (Exception e) {}
+        
+	}
+	public static void writeToDB() throws ClassNotFoundException {
+		Class.forName("oracle.jdbc.driver.OracleDriver");
+		Collection<City> value = Main.allCities.values();
+        ArrayList<City> tempCities = new ArrayList<>(value);
+    	Connection con;
+    	int i=0;
+    	
+    	do {
+			try {
+				con = DriverManager.getConnection("jdbc:oracle:thin:@oracle12c.hua.gr:1521:orcl","IT21941","otenet10");
+	            Statement st = (Statement) con.createStatement();
+	            while(i<tempCities.size()) {
+	                st.executeUpdate("INSERT INTO Cities VALUES('" + tempCities.get(i).getName() + "')");
+	                st.executeUpdate("INSERT INTO Terms_Vector VALUES ("+tempCities.get(i).getTerms_vector()[0]+","
+	                        +tempCities.get(i).getTerms_vector()[1]+","
+	                        +tempCities.get(i).getTerms_vector()[2]+","
+	                        +tempCities.get(i).getTerms_vector()[3]+","
+	                        +tempCities.get(i).getTerms_vector()[4]+","
+	                        +tempCities.get(i).getTerms_vector()[5]+","
+	                        +tempCities.get(i).getTerms_vector()[6]+","
+	                        +tempCities.get(i).getTerms_vector()[7]+","
+	                        +tempCities.get(i).getTerms_vector()[8]+","
+	                        +tempCities.get(i).getTerms_vector()[9]+",'"
+	                        +tempCities.get(i).getName()+"')");
+	                st.executeUpdate("INSERT INTO Geo_Vector VALUES ("+tempCities.get(i).getGeodesic_vector()[0]+","+tempCities.get(i).getGeodesic_vector()[1]+",'" + tempCities.get(i).getName()+"')");
+	                i++;
+	            }
+	            con.close();
+	            return;
+			}catch(Exception e) {
+				i++;
+				continue;
+			}
+		}while(true);
+	}
+	
+	public static void readFromDB() {
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Connection con = DriverManager.getConnection("jdbc:oracle:thin:@oracle12c.hua.gr:1521:orcl","IT21941","otenet10");
+			Statement st = (Statement) con.createStatement();
+			ResultSet rs = st.executeQuery("SELECT CITY_NAME , CAFE, SEA,MUSEUM,RESTAURANT,STADIUM,PARK,TEMPERATURE,SPORTS,MUSIC,TECHNOLOGY,LAT,LON FROM Cities JOIN Terms_Vector on Cities.city_name = Terms_Vector.city_terms JOIN Geo_Vector on Terms_Vector.city_terms = Geo_Vector.city_geo_terms");
+			
+			while(rs.next()) {
+				int [] tempTerms = new int[10];
+				double [] tempGeo = new double[2];
+				City tempCity = new City();
+				tempCity.setName(rs.getString(1));
+				for(int i=2;i<=11;i++) {
+					tempTerms[i-2] = rs.getInt(i);
+				}
+				tempCity.setTerms_vector(tempTerms);
+				tempGeo[0] = rs.getDouble(12);
+				tempGeo[1] = rs.getDouble(13);
+				tempCity.setGeodesic_vector(tempGeo);
+				
+				Main.allCities.put(tempCity.getName(),tempCity);
+			}
+		} catch (Exception e) {}
+		
+	}
+	
 }
