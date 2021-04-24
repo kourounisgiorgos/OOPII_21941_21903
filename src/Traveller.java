@@ -72,6 +72,7 @@ abstract class Traveller implements Comparable<Traveller> {
 	}
 
 	public void setTerms_pref() {
+		System.out.println("GIVE A SCORE OUT OF 10 FOR THE FOLLOWING : ");
 		System.out.println("Cafes - 0/10");
 		terms_pref[0] = checkInput(r.nextInt());
 
@@ -169,7 +170,9 @@ abstract class Traveller implements Comparable<Traveller> {
 			}
 
 		}
-
+		if(this.visit==null) {
+			this.visit = probableCity.getName();
+		}
 		return probableCity;
 	}
 
@@ -186,12 +189,15 @@ abstract class Traveller implements Comparable<Traveller> {
 			tempCities.remove(bestCities[i]);
 			i++;
 		}
-
-		System.out.print("Your Top " + x + " cities: ");
+		System.out.print("Your top " + x + " cities: ");
 		for (int j = 0; j < x; j++) {
-			System.out.print(bestCities[j].getName() + " ");
+			if(this.geodesic_pref[0] != bestCities[j].getGeodesic_vector()[0] || this.geodesic_pref[1] != bestCities[j].getGeodesic_vector()[1]) {
+				System.out.print(bestCities[j].getName() + " ");
+			}	
 		}
-		this.visit = bestCities[0].getName();
+		if(this.visit==null) {
+			this.visit = bestCities[0].getName();
+		}
 		System.out.println("");
 	}
 

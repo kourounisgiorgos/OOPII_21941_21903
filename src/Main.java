@@ -15,22 +15,6 @@ public class Main {
     	Traveller.loadTravellersFromJson();
     	City.readFromDB();
     	
-        //hard coded cities
-        City Athens = new City("Athens");
-        Athens.setTerms_vector();
-        Athens.setGeodesic_vector();
-        City Paris = new City("Paris");
-        Paris.setTerms_vector();
-        Paris.setGeodesic_vector();
-        City Moscow = new City("Moscow");
-        Moscow.setTerms_vector();
-        Moscow.setGeodesic_vector();
-
-        allCities.put(Athens.getName(), Athens);
-        allCities.put(Paris.getName(), Paris);
-        allCities.put(Moscow.getName(), Moscow);
-
-
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome to Automated Travelling Assistant!");
 
@@ -78,8 +62,8 @@ public class Main {
         traveller.setTerms_pref();
         
         
-        Collection<City> value = allCities.values();
-        ArrayList<City> tempCities = new ArrayList<>(value);
+        ArrayList<City> tempCities = new ArrayList<>(allCities.values());
+        
         System.out.print("Your best match: ");
         System.out.println(traveller.compareCities(tempCities).getName());
         

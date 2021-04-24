@@ -207,44 +207,11 @@ public class City {
                     +curCity.getTerms_vector()[9]+",'"
                     +curCity.getName()+"')");
             st.executeUpdate("INSERT INTO Geo_Vector VALUES ("+curCity.getGeodesic_vector()[0]+","+curCity.getGeodesic_vector()[1]+",'" + curCity.getName()+"')");
+            con.commit();
             con.close();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+		}
         
-	}
-	public static void writeToDB() throws ClassNotFoundException {
-		Class.forName("oracle.jdbc.driver.OracleDriver");
-		Collection<City> value = Main.allCities.values();
-        ArrayList<City> tempCities = new ArrayList<>(value);
-    	Connection con;
-    	int i=0;
-    	
-    	do {
-			try {
-				con = DriverManager.getConnection("jdbc:oracle:thin:@oracle12c.hua.gr:1521:orcl","IT21941","otenet10");
-	            Statement st = (Statement) con.createStatement();
-	            while(i<tempCities.size()) {
-	                st.executeUpdate("INSERT INTO Cities VALUES('" + tempCities.get(i).getName() + "')");
-	                st.executeUpdate("INSERT INTO Terms_Vector VALUES ("+tempCities.get(i).getTerms_vector()[0]+","
-	                        +tempCities.get(i).getTerms_vector()[1]+","
-	                        +tempCities.get(i).getTerms_vector()[2]+","
-	                        +tempCities.get(i).getTerms_vector()[3]+","
-	                        +tempCities.get(i).getTerms_vector()[4]+","
-	                        +tempCities.get(i).getTerms_vector()[5]+","
-	                        +tempCities.get(i).getTerms_vector()[6]+","
-	                        +tempCities.get(i).getTerms_vector()[7]+","
-	                        +tempCities.get(i).getTerms_vector()[8]+","
-	                        +tempCities.get(i).getTerms_vector()[9]+",'"
-	                        +tempCities.get(i).getName()+"')");
-	                st.executeUpdate("INSERT INTO Geo_Vector VALUES ("+tempCities.get(i).getGeodesic_vector()[0]+","+tempCities.get(i).getGeodesic_vector()[1]+",'" + tempCities.get(i).getName()+"')");
-	                i++;
-	            }
-	            con.close();
-	            return;
-			}catch(Exception e) {
-				i++;
-				continue;
-			}
-		}while(true);
 	}
 	
 	public static void readFromDB() {
@@ -269,7 +236,11 @@ public class City {
 				
 				Main.allCities.put(tempCity.getName(),tempCity);
 			}
-		} catch (Exception e) {}
+			con.commit();
+			con.close();
+		} catch (Exception e) {
+			System.out.println("Unable to connect to the database");
+		}
 		
 	}
 	
