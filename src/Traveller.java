@@ -70,40 +70,7 @@ abstract class Traveller implements Comparable<Traveller> {
 	public int[] getTerms_pref() {
 		return terms_pref;
 	}
-
-	public void setTerms_pref() {
-		System.out.println("GIVE A SCORE OUT OF 10 FOR THE FOLLOWING : ");
-		System.out.println("Cafes - 0/10");
-		terms_pref[0] = checkInput(r.nextInt());
-
-		System.out.println("Sea - 0/10");
-		terms_pref[1] = checkInput(r.nextInt());
-
-		System.out.println("Museums - 0/10");
-		terms_pref[2] = checkInput(r.nextInt());
-
-		System.out.println("Restaurant - 0/10");
-		terms_pref[3] = checkInput(r.nextInt());
-
-		System.out.println("Stadium - 0/10");
-		terms_pref[4] = checkInput(r.nextInt());
-
-		System.out.println("Parks - 0/10");
-		terms_pref[5] = checkInput(r.nextInt());
-
-		System.out.println("Hot weather - 0/10");
-		terms_pref[6] = checkInput(r.nextInt());
-
-		System.out.println("Sports - 0/10");
-		terms_pref[7] = checkInput(r.nextInt());
-
-		System.out.println("Music - 0/10");
-		terms_pref[8] = checkInput(r.nextInt());
-
-		System.out.println("Technology - 0/10");
-		terms_pref[9] = checkInput(r.nextInt());
-	}
-
+	
 	private int checkInput(int input) {
 
 		while (input < 0 || input > 10) {
@@ -176,7 +143,8 @@ abstract class Traveller implements Comparable<Traveller> {
 		return probableCity;
 	}
 
-	public void compareCities(ArrayList<City> cities, int x) {
+	public String[] compareCities(ArrayList<City> cities, int x) {
+		String[] topCities = new String[3];
 		if (x > cities.size()) {
 			x = cities.size();
 		}
@@ -189,16 +157,14 @@ abstract class Traveller implements Comparable<Traveller> {
 			tempCities.remove(bestCities[i]);
 			i++;
 		}
-		System.out.print("Your top " + x + " cities: ");
 		for (int j = 0; j < x; j++) {
-			if(this.geodesic_pref[0] != bestCities[j].getGeodesic_vector()[0] || this.geodesic_pref[1] != bestCities[j].getGeodesic_vector()[1]) {
-				System.out.print(bestCities[j].getName() + " ");
-			}	
+			topCities[j] = bestCities[j].getName();
 		}
 		if(this.visit==null) {
 			this.visit = bestCities[0].getName();
 		}
-		System.out.println("");
+		
+		return topCities;
 	}
 
 	public double calculateFreeTicket(City myCity) {
