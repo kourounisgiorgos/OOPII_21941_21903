@@ -71,6 +71,15 @@ abstract class Traveller implements Comparable<Traveller> {
 		return terms_pref;
 	}
 	
+	public static ArrayList<String>  getTravellerNames() {
+		Traveller.sortTravellers();
+		ArrayList<String> travNames = new ArrayList<>();
+		for(int i=0;i<Main.allTravellers.size();i++) {
+			travNames.add(Main.allTravellers.get(i).getName());
+		}
+		return travNames;
+	}
+	
 	private int checkInput(int input) {
 
 		while (input < 0 || input > 10) {

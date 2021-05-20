@@ -13,7 +13,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
     	
-    	
+    	Traveller.loadTravellersFromJson();
+    	City.readFromDB();
     	EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -24,13 +25,6 @@ public class Main {
 				}
 			}
 		});
-    	
-    	Traveller.loadTravellersFromJson();
-    	City.readFromDB();
-    	
-       
-        
-    	
         
     }
 }

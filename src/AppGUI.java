@@ -1,32 +1,23 @@
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
-
-import java.awt.BorderLayout;
 import javax.swing.JTextField;
-
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.swing.JButton;
-import javax.swing.JSlider;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
-
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
+import javax.swing.SwingConstants;
 
 public class AppGUI {
 
-	public static JFrame frame;
+	protected static JFrame frame;
 	private static JTextField nameTextField;
 	private static JTextField cityTextField;
 	private static JTextField ageText;
@@ -46,6 +37,7 @@ public class AppGUI {
 	private static JLabel lblYourTopCity;
 	private static JLabel lblYourTop2City;
 	private static JLabel lblYourTop3City;
+	private TravInfoJFrame statsFrame = new TravInfoJFrame();
 	
 	
 	
@@ -54,14 +46,13 @@ public class AppGUI {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+	
+	
 	protected void initialize() {
 		frame = new JFrame();
 		frame.getContentPane().setForeground(Color.BLACK);
 		frame.getContentPane().setFont(new Font("Tahoma", Font.BOLD, 13));
-		frame.getContentPane().setBackground(new Color(128, 0, 128));
+		frame.getContentPane().setBackground(new Color(153, 153, 204));
 		frame.setBounds(100, 100, 765, 500);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.setTitle("Travelling Assistant");
@@ -70,9 +61,10 @@ public class AppGUI {
         frame.setLocationRelativeTo(null);
         
         JLabel nameLabel = new JLabel("Insert your full name :");
+        nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
         nameLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
         nameLabel.setForeground(new Color(240, 248, 255));
-        nameLabel.setBounds(10, 59, 150, 35);
+        nameLabel.setBounds(10, 59, 171, 35);
         frame.getContentPane().add(nameLabel);
         
         nameTextField = new JTextField();
@@ -92,10 +84,10 @@ public class AppGUI {
         cityTextField.setBounds(233, 191, 86, 20);
         frame.getContentPane().add(cityTextField);
         
-        JLabel welcomeLabel = new JLabel("WELCOME TO YOUR TRAVELLING ASSISTANT");
+        JLabel welcomeLabel = new JLabel("YOUR TRAVELLING ASSISTANT");
         welcomeLabel.setFont(new Font("Verdana", Font.BOLD, 15));
         welcomeLabel.setForeground(new Color(240, 248, 255));
-        welcomeLabel.setBounds(0, 10, 416, 33);
+        welcomeLabel.setBounds(0, 10, 359, 33);
         frame.getContentPane().add(welcomeLabel);
         
         JLabel ageLabel = new JLabel("Insert your age :");
@@ -110,8 +102,8 @@ public class AppGUI {
         frame.getContentPane().add(ageText);
         
         JButton submit = new JButton("Submit Info");
-        submit.setBackground(new Color(255, 255, 255));
-        submit.setBounds(326, 273, 100, 23);
+        submit.setBackground(new Color(255, 250, 205));
+        submit.setBounds(313, 276, 123, 20);
         submit.addActionListener(new LoginAction());
         frame.getContentPane().add(submit);
         
@@ -236,53 +228,71 @@ public class AppGUI {
         frame.getContentPane().add(lblTechnology);
         
         JLabel lblRateTheFollowing = new JLabel("RATE THE FOLLOWING 0/10");
+        lblRateTheFollowing.setHorizontalAlignment(SwingConstants.LEFT);
         lblRateTheFollowing.setForeground(new Color(240, 248, 255));
         lblRateTheFollowing.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblRateTheFollowing.setBounds(538, 10, 196, 35);
+        lblRateTheFollowing.setBounds(524, 10, 225, 35);
         frame.getContentPane().add(lblRateTheFollowing);
         
         lblYourTop2City = new JLabel("YOUR TOP 2 CITY");
         lblYourTop2City.setForeground(new Color(240, 248, 255));
         lblYourTop2City.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblYourTop2City.setBounds(200, 369, 129, 35);
+        lblYourTop2City.setBounds(200, 369, 159, 35);
         lblYourTop2City.setVisible(false);
         frame.getContentPane().add(lblYourTop2City);
         
         topCity1 = new JLabel("");
+        topCity1.setHorizontalAlignment(SwingConstants.LEFT);
         topCity1.setForeground(new Color(240, 248, 255));
         topCity1.setFont(new Font("Tahoma", Font.BOLD, 13));
-        topCity1.setBounds(353, 333, 100, 35);
+        topCity1.setBounds(353, 333, 129, 35);
         frame.getContentPane().add(topCity1);
         
         lblYourTopCity = new JLabel("YOUR TOP CITY");
         lblYourTopCity.setForeground(new Color(240, 248, 255));
         lblYourTopCity.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblYourTopCity.setBounds(326, 307, 110, 35);
+        lblYourTopCity.setBounds(326, 307, 127, 35);
         lblYourTopCity.setVisible(false);
         frame.getContentPane().add(lblYourTopCity);
         
         lblYourTop3City = new JLabel("YOUR TOP 3 CITY");
         lblYourTop3City.setForeground(new Color(240, 248, 255));
         lblYourTop3City.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblYourTop3City.setBounds(435, 369, 150, 35);
+        lblYourTop3City.setBounds(435, 369, 164, 35);
         lblYourTop3City.setVisible(false);
         frame.getContentPane().add(lblYourTop3City);
         
         topCity2 = new JLabel("");
         topCity2.setForeground(new Color(240, 248, 255));
         topCity2.setFont(new Font("Tahoma", Font.BOLD, 13));
-        topCity2.setBounds(229, 402, 100, 35);
+        topCity2.setBounds(229, 402, 150, 35);
         frame.getContentPane().add(topCity2);
         
         topCity3 = new JLabel("");
         topCity3.setForeground(new Color(240, 248, 255));
         topCity3.setFont(new Font("Tahoma", Font.BOLD, 13));
-        topCity3.setBounds(471, 402, 100, 35);
+        topCity3.setBounds(471, 402, 139, 35);
         frame.getContentPane().add(topCity3);
         
+        JButton changeFrameBtn = new JButton("See All Travellers"); //change frame action
+        changeFrameBtn.setBackground(new Color(255, 250, 205));
+        changeFrameBtn.setBounds(0, 437, 160, 23);
+        changeFrameBtn.addActionListener(new ActionListener() {
+        	public void actionPerformed(ActionEvent e) {
+        		frame.setVisible(false);
+    			statsFrame.setVisible(true);
+    			statsFrame.nameLabel.setText("Total Travellers : " + Main.allTravellers.size());
+    			
+    			String[] str = new String[Traveller.getTravellerNames().size()];
+    			JList<String> travList = new JList<>(Traveller.getTravellerNames().toArray(str));
+    			travList.setBackground(new Color(153,153,204));
+    			statsFrame.scrollPane.setViewportView(travList);
+        	}
+        });
+        
+        frame.getContentPane().add(changeFrameBtn);
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-            	Traveller.sortTravellers();
                 try {
 					Traveller.writeTravellersToJson();
 				} catch (Exception e1) {}
@@ -292,10 +302,13 @@ public class AppGUI {
         });
 	}
 	
+	
 	private class LoginAction implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e){
+			
+			
 			Traveller traveller;
 			int age = Integer.parseInt(ageText.getText());
 			if (age < 16 || age > 130) {
@@ -316,15 +329,17 @@ public class AppGUI {
 			
 		    Main.allTravellers.add(traveller);
 			String city = cityTextField.getText();
+			
 			if (!Main.allCities.containsKey(city)) {
 	            City searchCity = new City(city);
 	            try {
 					searchCity.setTerms_vector();
+					searchCity.setGeodesic_vector();
 				} catch (Exception e2) {
 					JOptionPane.showMessageDialog(null, "City does not exist!");
 					return;
 				}
-	            searchCity.setGeodesic_vector();
+	            
 	            
 	            try {
 					City.writeToDB(searchCity);

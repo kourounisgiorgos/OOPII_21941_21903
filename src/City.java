@@ -85,10 +85,11 @@ public class City {
 
 	private double[] retrieveUnknownGeo(String appid) { // retrieve Geodesic info
 		ObjectMapper mapper = new ObjectMapper();
+		String nameWithoutSpace = this.name.replace(' ', '+');
 		do {
 			try {
 				OpenWeatherMap weather_obj = mapper.readValue(new URL(
-						"http://api.openweathermap.org/data/2.5/weather?q=" + this.name + "&APPID=" + appid + ""),
+						"http://api.openweathermap.org/data/2.5/weather?q=" + nameWithoutSpace + "&APPID=" + appid + ""),
 						OpenWeatherMap.class);
 				double[] tempGeo = { weather_obj.getCoord().getLat(), weather_obj.getCoord().getLon() };
 				return tempGeo;
@@ -105,9 +106,9 @@ public class City {
 	private int retrieveTemperature(String appid)
 			throws JsonParseException, JsonMappingException, MalformedURLException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
-
+		String nameWithoutSpace = this.name.replace(' ', '+');
 		OpenWeatherMap weather_obj = mapper.readValue(
-				new URL("http://api.openweathermap.org/data/2.5/weather?q=" + this.name + "&APPID=" + appid + ""),
+				new URL("http://api.openweathermap.org/data/2.5/weather?q=" + nameWithoutSpace + "&APPID=" + appid + ""),
 				OpenWeatherMap.class);
 		int temperature;
 
@@ -144,9 +145,9 @@ public class City {
 			throws JsonParseException, JsonMappingException, MalformedURLException, IOException {
 		int[] terms = new int[10];
 		ObjectMapper mapper = new ObjectMapper();
-
+		String nameWithoutSpace = this.name.replace(' ', '+');
 		MediaWiki mediaWiki_obj = mapper
-				.readValue(new URL("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&titles=" + this.name
+				.readValue(new URL("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&titles=" + nameWithoutSpace
 						+ "&format=json&formatversion=2"), MediaWiki.class);
 
 		terms[0] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "cafe");
