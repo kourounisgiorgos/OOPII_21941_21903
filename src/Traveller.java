@@ -1,5 +1,6 @@
 import java.io.File;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
@@ -16,7 +17,7 @@ abstract class Traveller implements Comparable<Traveller> {
 	protected double[] geodesic_pref = new double[2];
 	protected String name;
 	protected int age;
-	protected long timestamp;
+	protected Timestamp timestamp;
 	protected String visit;
 
 	public Traveller() {
@@ -26,10 +27,10 @@ abstract class Traveller implements Comparable<Traveller> {
 	public Traveller(String name, int age) {
 		this.name = name;
 		this.age = age;
-		this.timestamp = System.currentTimeMillis();
+		this.timestamp = new Timestamp(System.currentTimeMillis());
 	}
 
-	public long getTimestamp() {
+	public Timestamp getTimestamp() {
 		return this.timestamp;
 	}
 
@@ -49,7 +50,7 @@ abstract class Traveller implements Comparable<Traveller> {
 		this.age = age;
 	}
 
-	public void setTimestamp(long timestamp) {
+	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
 
@@ -74,8 +75,10 @@ abstract class Traveller implements Comparable<Traveller> {
 	public static ArrayList<String>  getTravellerNames() {
 		Traveller.sortTravellers();
 		ArrayList<String> travNames = new ArrayList<>();
+		Date myDate;
 		for(int i=0;i<Main.allTravellers.size();i++) {
-			travNames.add(Main.allTravellers.get(i).getName());
+			myDate = new Date(Main.allTravellers.get(i).getTimestamp().getTime());
+			travNames.add("Name : " + Main.allTravellers.get(i).getName() + " || Age : " + Main.allTravellers.get(i).getAge() + " || Date : " + myDate);
 		}
 		return travNames;
 	}
@@ -197,7 +200,7 @@ abstract class Traveller implements Comparable<Traveller> {
 				uniqueElements.add(element);
 		}
 		Collections.sort(uniqueElements);
-		Main.allTravellers = uniqueElements; //TO-DO ask prof about it
+		Main.allTravellers = uniqueElements; 
 	}
 
 	@Override
@@ -218,10 +221,10 @@ abstract class Traveller implements Comparable<Traveller> {
 
 	@Override
 	public int compareTo(Traveller traveller) { // needed for sort
-		if (timestamp < traveller.timestamp) {
+		if (timestamp.getTime() <traveller.timestamp.getTime()) {
 
 			return -1;
-		} else if (timestamp > traveller.timestamp) {
+		} else if (timestamp.getTime() > traveller.timestamp.getTime()) {
 			return 1;
 		} else {
 			return 0;

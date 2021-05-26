@@ -1,8 +1,8 @@
 import java.awt.EventQueue;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Scanner;
+import com.formdev.flatlaf.FlatLightLaf;
+import javax.swing.*;
 
 public class Main {
     static final String appid = "7ee00d1719bab23e58e8acfad960fa89";
@@ -12,7 +12,14 @@ public class Main {
     
 
     public static void main(String[] args) throws Exception {
-    	
+
+    	//flatlaf theme installation
+		try {
+			UIManager.setLookAndFeel( new FlatLightLaf() );
+		} catch( Exception ex ) {
+			System.err.println( "Failed to initialize LaF" );
+		}
+
     	Traveller.loadTravellersFromJson();
     	City.readFromDB();
     	EventQueue.invokeLater(new Runnable() {

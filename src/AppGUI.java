@@ -1,19 +1,10 @@
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import java.awt.Color;
-import java.awt.Font;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
 
 public class AppGUI {
 
@@ -38,187 +29,187 @@ public class AppGUI {
 	private static JLabel lblYourTop2City;
 	private static JLabel lblYourTop3City;
 	private TravInfoJFrame statsFrame = new TravInfoJFrame();
-	
-	
-	
+    private ImageIcon frameBackgroundImg = new ImageIcon(this.getClass().getResource("/space.jpg"));
+    private JLabel frameBackground;
+
 	
 	public AppGUI() {
 		initialize();
 	}
 
-	
-	
 	protected void initialize() {
 		frame = new JFrame();
+
+
 		frame.getContentPane().setForeground(Color.BLACK);
 		frame.getContentPane().setFont(new Font("Tahoma", Font.BOLD, 13));
-		frame.getContentPane().setBackground(new Color(153, 153, 204));
-		frame.setBounds(100, 100, 765, 500);
+		frame.setBounds(100, 100, 764, 500);
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.setTitle("Travelling Assistant");
         frame.setResizable(false);
         frame.getContentPane().setLayout(null);
         frame.setLocationRelativeTo(null);
-        
-        JLabel nameLabel = new JLabel("Insert your full name :");
+
+        JLabel nameLabel = new JLabel("Full Name:");
         nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
         nameLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
         nameLabel.setForeground(new Color(240, 248, 255));
-        nameLabel.setBounds(10, 59, 171, 35);
+        nameLabel.setBounds(5, 54, 129, 35);
         frame.getContentPane().add(nameLabel);
         
         nameTextField = new JTextField();
         nameTextField.setBackground(new Color(255, 255, 255));
-        nameTextField.setBounds(182, 67, 123, 20);
+        nameTextField.setBounds(130, 60, 123, 25);
         frame.getContentPane().add(nameTextField);
         nameTextField.setColumns(4);
         
-        JLabel cityLabel = new JLabel("Insert your city of residence :");
+        JLabel cityLabel = new JLabel("City of residence:");
         cityLabel.setForeground(new Color(240, 248, 255));
         cityLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
-        cityLabel.setBounds(10, 183, 225, 35);
+        cityLabel.setBounds(5, 146, 155, 35);
         frame.getContentPane().add(cityLabel);
         
         cityTextField = new JTextField();
         cityTextField.setColumns(10);
-        cityTextField.setBounds(233, 191, 86, 20);
+        cityTextField.setBounds(130, 152, 123, 25);
         frame.getContentPane().add(cityTextField);
         
         JLabel welcomeLabel = new JLabel("YOUR TRAVELLING ASSISTANT");
-        welcomeLabel.setFont(new Font("Verdana", Font.BOLD, 15));
-        welcomeLabel.setForeground(new Color(240, 248, 255));
-        welcomeLabel.setBounds(0, 10, 359, 33);
+        welcomeLabel.setFont(new Font("Verdana", Font.BOLD, 16));
+        welcomeLabel.setForeground(new Color(37, 150, 190));
+        welcomeLabel.setBounds(5, 10, 359, 33);
         frame.getContentPane().add(welcomeLabel);
         
-        JLabel ageLabel = new JLabel("Insert your age :");
+        JLabel ageLabel = new JLabel("Age:");
         ageLabel.setForeground(new Color(240, 248, 255));
         ageLabel.setFont(new Font("Tahoma", Font.BOLD, 13));
-        ageLabel.setBounds(10, 123, 129, 35);
+        ageLabel.setBounds(5, 100, 129, 35);
         frame.getContentPane().add(ageLabel);
         
         ageText = new JTextField();
         ageText.setColumns(10);
-        ageText.setBounds(138, 131, 31, 20);
+        ageText.setBounds(130, 106, 123, 25);
         frame.getContentPane().add(ageText);
         
         JButton submit = new JButton("Submit Info");
+        submit.setHorizontalAlignment(SwingConstants.CENTER);
         submit.setBackground(new Color(255, 250, 205));
-        submit.setBounds(313, 276, 123, 20);
+        submit.setBounds(320, 276, 123, 20);
         submit.addActionListener(new LoginAction());
         frame.getContentPane().add(submit);
         
         cafe = new JSpinner();
         cafe.setModel(new SpinnerNumberModel(5, 0, 10, 1));
-        cafe.setBounds(522, 67, 39, 20);
+        cafe.setBounds(522, 67, 45, 20);
         ((JSpinner.DefaultEditor)cafe.getEditor()).getTextField().setEditable(false);
         frame.getContentPane().add(cafe);
         
         sea = new JSpinner();
         sea.setModel(new SpinnerNumberModel(5, 0, 10, 1));
-        sea.setBounds(522, 105, 39, 20);
+        sea.setBounds(522, 105, 45, 20);
         ((JSpinner.DefaultEditor)sea.getEditor()).getTextField().setEditable(false);
         frame.getContentPane().add(sea);
         
         museum = new JSpinner();
         museum.setModel(new SpinnerNumberModel(5, 0, 10, 1));
-        museum.setBounds(522, 144, 39, 20);
+        museum.setBounds(522, 144, 45, 20);
         ((JSpinner.DefaultEditor)museum.getEditor()).getTextField().setEditable(false);
         frame.getContentPane().add(museum);
         
         restaurant = new JSpinner();
         restaurant.setModel(new SpinnerNumberModel(5, 0, 10, 1));
-        restaurant.setBounds(522, 191, 39, 20);
+        restaurant.setBounds(522, 191, 45, 20);
         ((JSpinner.DefaultEditor)restaurant.getEditor()).getTextField().setEditable(false);
         frame.getContentPane().add(restaurant);
         
         stadium = new JSpinner();
         stadium.setModel(new SpinnerNumberModel(5, 0, 10, 1));
-        stadium.setBounds(522, 235, 39, 20);
+        stadium.setBounds(522, 235, 45, 20);
         ((JSpinner.DefaultEditor)stadium.getEditor()).getTextField().setEditable(false);
         frame.getContentPane().add(stadium);
         
         parks = new JSpinner();
         parks.setModel(new SpinnerNumberModel(5, 0, 10, 1));
-        parks.setBounds(695, 67, 39, 20);
+        parks.setBounds(695, 67, 45, 20);
         ((JSpinner.DefaultEditor)parks.getEditor()).getTextField().setEditable(false);
         frame.getContentPane().add(parks);
         
         hotWeather = new JSpinner();
         hotWeather.setModel(new SpinnerNumberModel(5, 0, 10, 1));
-        hotWeather.setBounds(695, 105, 39, 20);
+        hotWeather.setBounds(695, 105, 45, 20);
         ((JSpinner.DefaultEditor)hotWeather.getEditor()).getTextField().setEditable(false);
         frame.getContentPane().add(hotWeather);
         
         sports = new JSpinner();
         sports.setModel(new SpinnerNumberModel(5, 0, 10, 1));
-        sports.setBounds(695, 144, 39, 20);
+        sports.setBounds(695, 144, 45, 20);
         ((JSpinner.DefaultEditor)sports.getEditor()).getTextField().setEditable(false);
         frame.getContentPane().add(sports);
         
         music = new JSpinner();
         music.setModel(new SpinnerNumberModel(5, 0, 10, 1));
-        music.setBounds(695, 191, 39, 20);
+        music.setBounds(695, 191, 45, 20);
         ((JSpinner.DefaultEditor)music.getEditor()).getTextField().setEditable(false);
         frame.getContentPane().add(music);
         
         technology = new JSpinner();
         technology.setModel(new SpinnerNumberModel(5, 0, 10, 1));
-        technology.setBounds(695, 235, 39, 20);
+        technology.setBounds(695, 235, 45, 20);
         ((JSpinner.DefaultEditor)technology.getEditor()).getTextField().setEditable(false);
         frame.getContentPane().add(technology);
         
-        JLabel lblCafes = new JLabel("Cafes :");
+        JLabel lblCafes = new JLabel("Cafes:");
         lblCafes.setForeground(new Color(240, 248, 255));
         lblCafes.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblCafes.setBounds(447, 59, 54, 35);
+        lblCafes.setBounds(470, 59, 54, 35);
         frame.getContentPane().add(lblCafes);
         
-        JLabel lblCafes_1 = new JLabel("Sea :");
+        JLabel lblCafes_1 = new JLabel("Sea:");
         lblCafes_1.setForeground(new Color(240, 248, 255));
         lblCafes_1.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblCafes_1.setBounds(458, 97, 54, 35);
+        lblCafes_1.setBounds(485, 97, 54, 35);
         frame.getContentPane().add(lblCafes_1);
         
-        JLabel lblCafes_2 = new JLabel("Museum :");
+        JLabel lblCafes_2 = new JLabel("Museum:");
         lblCafes_2.setForeground(new Color(240, 248, 255));
         lblCafes_2.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblCafes_2.setBounds(435, 136, 77, 35);
+        lblCafes_2.setBounds(450, 136, 77, 35);
         frame.getContentPane().add(lblCafes_2);
         
-        JLabel lblRestaurants = new JLabel("Restaurants :");
+        JLabel lblRestaurants = new JLabel("Restaurants:");
         lblRestaurants.setForeground(new Color(240, 248, 255));
         lblRestaurants.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblRestaurants.setBounds(411, 183, 110, 35);
+        lblRestaurants.setBounds(425, 183, 110, 35);
         frame.getContentPane().add(lblRestaurants);
         
-        JLabel lblStadium = new JLabel("Stadium :");
+        JLabel lblStadium = new JLabel("Stadium:");
         lblStadium.setForeground(new Color(240, 248, 255));
         lblStadium.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblStadium.setBounds(435, 227, 77, 35);
+        lblStadium.setBounds(452, 227, 77, 35);
         frame.getContentPane().add(lblStadium);
         
-        JLabel lblParks = new JLabel("Parks :");
+        JLabel lblParks = new JLabel("Parks:");
         lblParks.setForeground(new Color(240, 248, 255));
         lblParks.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblParks.setBounds(631, 59, 54, 35);
+        lblParks.setBounds(645, 59, 54, 35);
         frame.getContentPane().add(lblParks);
         
-        JLabel lblHotWeather = new JLabel("Hot Weather :");
+        JLabel lblHotWeather = new JLabel("Hot Weather:");
         lblHotWeather.setForeground(new Color(240, 248, 255));
         lblHotWeather.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblHotWeather.setBounds(585, 97, 100, 35);
+        lblHotWeather.setBounds(595, 97, 100, 35);
         frame.getContentPane().add(lblHotWeather);
         
-        JLabel lblSports = new JLabel("Sports :");
+        JLabel lblSports = new JLabel("Sports:");
         lblSports.setForeground(new Color(240, 248, 255));
         lblSports.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblSports.setBounds(627, 136, 68, 35);
+        lblSports.setBounds(640, 136, 68, 35);
         frame.getContentPane().add(lblSports);
         
-        JLabel lblMusic = new JLabel("Music :");
+        JLabel lblMusic = new JLabel("Music:");
         lblMusic.setForeground(new Color(240, 248, 255));
         lblMusic.setFont(new Font("Tahoma", Font.BOLD, 13));
-        lblMusic.setBounds(631, 183, 54, 35);
+        lblMusic.setBounds(645, 183, 54, 35);
         frame.getContentPane().add(lblMusic);
         
         JLabel lblTechnology = new JLabel("Technology:");
@@ -273,7 +264,8 @@ public class AppGUI {
         topCity3.setFont(new Font("Tahoma", Font.BOLD, 13));
         topCity3.setBounds(471, 402, 139, 35);
         frame.getContentPane().add(topCity3);
-        
+
+
         JButton changeFrameBtn = new JButton("See All Travellers"); //change frame action
         changeFrameBtn.setBackground(new Color(255, 250, 205));
         changeFrameBtn.setBounds(0, 437, 160, 23);
@@ -281,16 +273,28 @@ public class AppGUI {
         	public void actionPerformed(ActionEvent e) {
         		frame.setVisible(false);
     			statsFrame.setVisible(true);
-    			statsFrame.nameLabel.setText("Total Travellers : " + Main.allTravellers.size());
+    			Traveller.sortTravellers();
+    			statsFrame.nameLabel.setText("Total Travellers: " + Main.allTravellers.size());
     			
     			String[] str = new String[Traveller.getTravellerNames().size()];
     			JList<String> travList = new JList<>(Traveller.getTravellerNames().toArray(str));
-    			travList.setBackground(new Color(153,153,204));
+    			travList.setOpaque(false);
+    			travList.setForeground(new Color(37, 150, 190));
+    			travList.setBackground(new Color(35,30,33,255));
+    			((DefaultListCellRenderer) travList.getCellRenderer()).setOpaque(false);
     			statsFrame.scrollPane.setViewportView(travList);
+
+                //Background
+    			statsFrame.getContentPane().add(frameBackground);
         	}
         });
-        
         frame.getContentPane().add(changeFrameBtn);
+
+        //Background
+        frameBackground = new JLabel(frameBackgroundImg);
+        frameBackground.setBounds(0, 0, 765, 500);
+        frame.getContentPane().add(frameBackground);
+
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 try {
@@ -300,7 +304,12 @@ public class AppGUI {
                 System.exit(0);
             }
         });
-	}
+
+        //Background reinitialization for when returning from statsFrame
+        frameBackground = new JLabel(frameBackgroundImg);
+        frameBackground.setBounds(0, 0, 765, 500);
+        frame.getContentPane().add(frameBackground);
+    }
 	
 	
 	private class LoginAction implements ActionListener {
@@ -310,9 +319,16 @@ public class AppGUI {
 			
 			
 			Traveller traveller;
-			int age = Integer.parseInt(ageText.getText());
+			int age;
+			try {
+				age = Integer.parseInt(ageText.getText());
+				}
+				catch(Exception e2) {
+				  JOptionPane.showMessageDialog(null, "Not a valid number for age. Try again!");
+				  return;
+				}
 			if (age < 16 || age > 130) {
-				JOptionPane.showMessageDialog(null, "Incorrect age . Try again!");
+				JOptionPane.showMessageDialog(null, "Incorrect age. Try again!");
 				return;
 	        }
 			String name = nameTextField.getText();
@@ -380,4 +396,5 @@ public class AppGUI {
 		}
 		
     }
+	
 }

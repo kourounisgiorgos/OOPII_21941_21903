@@ -7,7 +7,6 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 
 
@@ -58,9 +57,11 @@ public class TravInfoJFrame extends JFrame {
         
         scrollPane = new JScrollPane();
         scrollPane.setBorder(null);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         scrollPane.setBackground(new Color(255, 255, 255));
         scrollPane.setToolTipText("");
-        scrollPane.setBounds(10, 36, 200, 379);
+        scrollPane.setBounds(10, 36, 739, 369);
         getContentPane().add(scrollPane);
         
 	}
