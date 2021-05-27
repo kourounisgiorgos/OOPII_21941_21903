@@ -45,7 +45,7 @@ public class TravInfoJFrame extends JFrame {
         getContentPane().add(nameLabel);
         
         JButton btnNewButton = new JButton("Back");
-        btnNewButton.setBackground(new Color(255, 250, 205));
+        btnNewButton.setBackground(new Color(255, 255, 255));
         btnNewButton.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
         		setVisible(false);

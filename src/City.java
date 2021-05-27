@@ -226,7 +226,7 @@ public class City {
 			con.commit();
 			con.close();
 		} catch (Exception e) {
-			System.out.println("Unable to connect to the database");
+			AppGUI.getDbWarning().setText("Not Connected to Database! Restart Program.");
 		}
 
 	}

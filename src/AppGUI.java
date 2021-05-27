@@ -30,9 +30,16 @@ public class AppGUI {
 	private static JLabel lblYourTop3City;
 	private TravInfoJFrame statsFrame = new TravInfoJFrame();
     private ImageIcon frameBackgroundImg = new ImageIcon(this.getClass().getResource("/space.jpg"));
+    private ImageIcon iconImg = new ImageIcon(this.getClass().getResource("/icon.png"));
     private JLabel frameBackground;
+    private static JLabel dbWarning = new JLabel("");
 
 	
+	public static JLabel getDbWarning() {
+		return dbWarning;
+	}
+
+
 	public AppGUI() {
 		initialize();
 	}
@@ -49,6 +56,14 @@ public class AppGUI {
         frame.setResizable(false);
         frame.getContentPane().setLayout(null);
         frame.setLocationRelativeTo(null);
+        frame.setIconImage(iconImg.getImage());
+        
+        
+        dbWarning.setHorizontalAlignment(SwingConstants.LEFT);
+        dbWarning.setForeground(new Color(240, 248, 255));
+        dbWarning.setFont(new Font("Tahoma", Font.PLAIN, 11));
+        dbWarning.setBounds(515, 436, 234, 35);
+        frame.getContentPane().add(dbWarning);
 
         JLabel nameLabel = new JLabel("Full Name:");
         nameLabel.setHorizontalAlignment(SwingConstants.LEFT);
@@ -93,7 +108,7 @@ public class AppGUI {
         
         JButton submit = new JButton("Submit Info");
         submit.setHorizontalAlignment(SwingConstants.CENTER);
-        submit.setBackground(new Color(255, 250, 205));
+        submit.setBackground(new Color(255, 255, 255));
         submit.setBounds(320, 276, 123, 20);
         submit.addActionListener(new LoginAction());
         frame.getContentPane().add(submit);
@@ -267,7 +282,7 @@ public class AppGUI {
 
 
         JButton changeFrameBtn = new JButton("See All Travellers"); //change frame action
-        changeFrameBtn.setBackground(new Color(255, 250, 205));
+        changeFrameBtn.setBackground(new Color(255, 255, 255));
         changeFrameBtn.setBounds(0, 437, 160, 23);
         changeFrameBtn.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent e) {
@@ -396,5 +411,4 @@ public class AppGUI {
 		}
 		
     }
-	
 }
