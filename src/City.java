@@ -10,15 +10,12 @@ import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Scanner;
+
 
 public class City {
 
-	private static Scanner scan = new Scanner(System.in);
+	
 
 	private String name;
 	private int[] terms_vector = new int[10];
@@ -59,7 +56,7 @@ public class City {
 		return geodesic_vector;
 	}
 
-	public void setGeodesic_vector() {
+	public void setGeodesic_vector() throws JsonParseException, JsonMappingException, MalformedURLException, IOException {
 		this.geodesic_vector = retrieveUnknownGeo(Main.appid);
 	}
 
@@ -83,23 +80,17 @@ public class City {
 		return bestTraveller;
 	}
 
-	private double[] retrieveUnknownGeo(String appid) { // retrieve Geodesic info
+	private double[] retrieveUnknownGeo(String appid)
+			throws JsonParseException, JsonMappingException, MalformedURLException, IOException { // retrieve Geodesic
+																									// info
 		ObjectMapper mapper = new ObjectMapper();
 		String nameWithoutSpace = this.name.replace(' ', '+');
-		do {
-			try {
-				OpenWeatherMap weather_obj = mapper.readValue(new URL(
-						"http://api.openweathermap.org/data/2.5/weather?q=" + nameWithoutSpace + "&APPID=" + appid + ""),
-						OpenWeatherMap.class);
-				double[] tempGeo = { weather_obj.getCoord().getLat(), weather_obj.getCoord().getLon() };
-				return tempGeo;
-			} catch (Exception e) {
-				System.out.println("City " + this.name + " doesn't exist");
-				System.out.println("Try inserting an existing city:");
-				this.name = scan.nextLine();
-				continue;
-			}
-		} while (true);
+
+		OpenWeatherMap weather_obj = mapper.readValue(new URL(
+				"http://api.openweathermap.org/data/2.5/weather?q=" + nameWithoutSpace + "&APPID=" + appid + ""),
+				OpenWeatherMap.class);
+		double[] tempGeo = { weather_obj.getCoord().getLat(), weather_obj.getCoord().getLon() };
+		return tempGeo;
 
 	}
 
@@ -107,8 +98,8 @@ public class City {
 			throws JsonParseException, JsonMappingException, MalformedURLException, IOException {
 		ObjectMapper mapper = new ObjectMapper();
 		String nameWithoutSpace = this.name.replace(' ', '+');
-		OpenWeatherMap weather_obj = mapper.readValue(
-				new URL("http://api.openweathermap.org/data/2.5/weather?q=" + nameWithoutSpace + "&APPID=" + appid + ""),
+		OpenWeatherMap weather_obj = mapper.readValue(new URL(
+				"http://api.openweathermap.org/data/2.5/weather?q=" + nameWithoutSpace + "&APPID=" + appid + ""),
 				OpenWeatherMap.class);
 		int temperature;
 
@@ -147,8 +138,8 @@ public class City {
 		ObjectMapper mapper = new ObjectMapper();
 		String nameWithoutSpace = this.name.replace(' ', '+');
 		MediaWiki mediaWiki_obj = mapper
-				.readValue(new URL("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&titles=" + nameWithoutSpace
-						+ "&format=json&formatversion=2"), MediaWiki.class);
+				.readValue(new URL("https://en.wikipedia.org/w/api.php?action=query&prop=extracts&titles="
+						+ nameWithoutSpace + "&format=json&formatversion=2"), MediaWiki.class);
 
 		terms[0] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "cafe");
 		terms[1] = countCriterionCity(mediaWiki_obj.getQuery().getPages().get(0).getExtract(), "sea");

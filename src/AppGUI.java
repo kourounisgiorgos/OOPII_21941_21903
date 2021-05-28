@@ -327,8 +327,10 @@ public class AppGUI {
     }
 	
 	
+	static int flag = 1; //1 is good , 0 is bad
 	private class LoginAction implements ActionListener {
-
+		
+		
 		@Override
 		public void actionPerformed(ActionEvent e){
 			
@@ -363,14 +365,26 @@ public class AppGUI {
 			
 			if (!Main.allCities.containsKey(city)) {
 	            City searchCity = new City(city);
+	            Main.allCities.put(city,searchCity);
+	            
+	            
+	            ThreadTerms myThreadTerms = new ThreadTerms();
+	            ThreadGeo myThreadGeo = new ThreadGeo();
+	            myThreadTerms.start();
+	            myThreadGeo.start();
+	            
 	            try {
-					searchCity.setTerms_vector();
-					searchCity.setGeodesic_vector();
-				} catch (Exception e2) {
-					JOptionPane.showMessageDialog(null, "City does not exist!");
-					return;
+					myThreadTerms.join();
+					myThreadGeo.join();
+				} catch (InterruptedException e2) {
+					System.out.println("Interrupted");
 				}
 	            
+	            
+	            if(AppGUI.flag == 0) {
+	            	JOptionPane.showMessageDialog(null, "City does not exist , please try again");
+	            	return;
+	            }
 	            
 	            try {
 					City.writeToDB(searchCity);
@@ -411,4 +425,43 @@ public class AppGUI {
 		}
 		
     }
+	
+	private class ThreadTerms extends Thread{
+		
+		String city = cityTextField.getText();
+		City searchCity = Main.allCities.get(city);
+		
+		
+		@Override
+		public void run(){
+			try {
+				searchCity.setTerms_vector();
+				AppGUI.flag = 1;
+			} catch (Exception e) {
+				Main.allCities.remove(city);
+				AppGUI.flag = 0;
+				
+			}
+			
+		}
+	}
+	
+	private class ThreadGeo extends Thread{
+		
+		String city = cityTextField.getText();
+		City searchCity = Main.allCities.get(city);
+		
+		@Override
+		public void run(){
+			try {
+				searchCity.setGeodesic_vector();
+				AppGUI.flag =1 ;
+			} catch (Exception e) {
+				Main.allCities.remove(city);
+				AppGUI.flag = 0;
+				
+			}
+			
+		}
+	}
 }

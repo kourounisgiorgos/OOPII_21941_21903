@@ -4,6 +4,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -13,6 +14,7 @@ import javax.swing.JScrollPane;
 public class TravInfoJFrame extends JFrame {
 	protected JLabel nameLabel;
 	protected JScrollPane scrollPane;
+	private ImageIcon iconImg = new ImageIcon(this.getClass().getResource("/icon.png"));
 	
 	
 	public TravInfoJFrame() {
@@ -26,7 +28,7 @@ public class TravInfoJFrame extends JFrame {
         setResizable(false);
         getContentPane().setLayout(null);
         setLocationRelativeTo(null);
-        
+        setIconImage(iconImg.getImage());
         
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -61,7 +63,7 @@ public class TravInfoJFrame extends JFrame {
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBackground(new Color(255, 255, 255));
         scrollPane.setToolTipText("");
-        scrollPane.setBounds(10, 36, 739, 369);
+        scrollPane.setBounds(10, 36, 344, 369);
         getContentPane().add(scrollPane);
         
 	}
