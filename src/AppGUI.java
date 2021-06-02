@@ -439,15 +439,22 @@ public class AppGUI {
 					.comparingInt(trav->{
 						int sum=0;
 						for(int i=0;i<10;i++) {
-							sum+= trav.getTerms_pref()[i]*traveller.getTerms_pref()[i];
+							System.out.println(trav.getTerms_pref()[i]);
+						}
+						System.out.println("**********************************");
+						for(int i=0;i<10;i++) {
+							sum = sum+(trav.getTerms_pref()[i]*traveller.getTerms_pref()[i]);
 						}
 						System.out.println(sum);
 						return sum;
 					}))
 					.orElse(null);
 	        Main.allTravellers.add(traveller);
-	        lblColab.setText(colabTraveller.getVisit());
-	        lblColabView.setVisible(true);
+	        if(colabTraveller!=null) {
+	        	lblColab.setText(colabTraveller.getVisit());
+		        lblColabView.setVisible(true);
+	        }
+	        
 	        
 	        ArrayList<City> tempCities = new ArrayList<>(Main.allCities.values());
 
