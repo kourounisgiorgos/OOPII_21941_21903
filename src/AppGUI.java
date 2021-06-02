@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class AppGUI {
 
@@ -33,6 +34,8 @@ public class AppGUI {
     private ImageIcon iconImg = new ImageIcon(this.getClass().getResource("/icon.png"));
     private JLabel frameBackground;
     private static JLabel dbWarning = new JLabel("");
+    private static JLabel lblColabView;
+    private static JLabel lblColab;
 
 	
 	public static JLabel getDbWarning() {
@@ -57,6 +60,19 @@ public class AppGUI {
         frame.getContentPane().setLayout(null);
         frame.setLocationRelativeTo(null);
         frame.setIconImage(iconImg.getImage());
+        
+        lblColabView = new JLabel("Based on Community:");
+        lblColabView.setForeground(new Color(240, 248, 255));
+        lblColabView.setVisible(false);
+        lblColabView.setFont(new Font("Tahoma", Font.ITALIC, 13));
+        lblColabView.setBounds(5, 369, 150, 35);
+        frame.getContentPane().add(lblColabView);
+        
+        lblColab = new JLabel("");
+        lblColab.setForeground(new Color(240, 248, 255));
+        lblColab.setFont(new Font("Tahoma", Font.BOLD, 13));
+        lblColab.setBounds(5, 391, 150, 35);
+        frame.getContentPane().add(lblColab);
         
         
         dbWarning.setHorizontalAlignment(SwingConstants.LEFT);
@@ -289,6 +305,8 @@ public class AppGUI {
         		frame.setVisible(false);
     			statsFrame.setVisible(true);
     			Traveller.sortTravellers();
+
+    			
     			statsFrame.nameLabel.setText("Total Travellers: " + Main.allTravellers.size());
     			
     			String[] str = new String[Traveller.getTravellerNames().size()];
@@ -344,10 +362,16 @@ public class AppGUI {
 				  JOptionPane.showMessageDialog(null, "Not a valid number for age. Try again!");
 				  return;
 				}
-			if (age < 16 || age > 130) {
-				JOptionPane.showMessageDialog(null, "Incorrect age. Try again!");
+			if (age < 16) {
+				JOptionPane.showMessageDialog(null, "Too young. Try again!");
 				return;
 	        }
+			
+			if (age > 130) {
+				JOptionPane.showMessageDialog(null, "Too old. Try again!");
+				return;
+	        }
+			
 			String name = nameTextField.getText();
 			if (age >= 16 && age <= 25) {
 	            traveller = new YoungTraveller(name, age);
@@ -359,8 +383,9 @@ public class AppGUI {
 	            traveller = new ElderTraveller(name, age);
 
 	        }
+		
 			
-		    Main.allTravellers.add(traveller);
+		    
 			String city = cityTextField.getText();
 			
 			if (!Main.allCities.containsKey(city)) {
@@ -410,11 +435,25 @@ public class AppGUI {
 			termsPref[9] = (int) technology.getValue();
 			
 	        traveller.setTerms_pref(termsPref);
+	        Traveller colabTraveller = Main.allTravellers.stream().max(Comparator
+					.comparingInt(trav->{
+						int sum=0;
+						for(int i=0;i<10;i++) {
+							sum+= trav.getTerms_pref()[i]*traveller.getTerms_pref()[i];
+						}
+						System.out.println(sum);
+						return sum;
+					}))
+					.orElse(null);
+	        Main.allTravellers.add(traveller);
+	        lblColab.setText(colabTraveller.getVisit());
+	        lblColabView.setVisible(true);
 	        
 	        ArrayList<City> tempCities = new ArrayList<>(Main.allCities.values());
 
 	        
 	        String[] topCities = traveller.compareCities(tempCities, 3);
+	        traveller.setVisit(topCities[0]);
 	        lblYourTopCity.setVisible(true);
 	        topCity1.setText(topCities[0]);
 	        lblYourTop2City.setVisible(true);

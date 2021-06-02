@@ -63,7 +63,7 @@ public class TravInfoJFrame extends JFrame {
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setBackground(new Color(255, 255, 255));
         scrollPane.setToolTipText("");
-        scrollPane.setBounds(10, 36, 344, 369);
+        scrollPane.setBounds(10, 36, 408, 369);
         getContentPane().add(scrollPane);
         
 	}
