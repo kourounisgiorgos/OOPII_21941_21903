@@ -346,8 +346,6 @@ public class AppGUI {
 	
 	
 	static int flag = 1; //1 is good , 0 is bad
-	static String colabVisit = ""; //community visit
-	static int max = -1; //used for lambda
 	private class LoginAction implements ActionListener {
 		
 		
@@ -438,25 +436,21 @@ public class AppGUI {
 			
 	        traveller.setTerms_pref(termsPref);
 	        
-	        
-	       
-	        Main.allTravellers.stream().forEach((trav)->{
-	        	int sum=0;
-                for(int i=0;i<10;i++) {
-                    sum = sum+(trav.getTerms_pref()[i]*traveller.getTerms_pref()[i]);
-                }
-                System.out.println(trav.getName()+ " "+ trav.getVisit() + " " + sum);
-                if(sum > max) {
-                	max = sum;
-                	colabVisit = trav.getVisit();
-                }
-                
-	        });
+	        Traveller colabTraveller = Main.allTravellers.stream().max(Comparator
+					.comparingInt(trav->{
+						int sum=0;
+						for(int i=0;i<10;i++) {
+							sum = sum+(trav.getTerms_pref()[i]*traveller.getTerms_pref()[i]);
+						}
+						System.out.println(trav.getName()+ " "+ trav.getVisit() + " " + sum);
+						
+						return sum;
+					}))
+					.orElse(null);
 	        System.out.println("*********************************************");
-	        max = -1;
 	        Main.allTravellers.add(traveller);
-	        if(!colabVisit.equals("")) {
-	        	lblColab.setText(colabVisit);
+	        if(colabTraveller!=null) {
+	        	lblColab.setText(colabTraveller.getVisit());
 		        lblColabView.setVisible(true);
 	        }
 	        
