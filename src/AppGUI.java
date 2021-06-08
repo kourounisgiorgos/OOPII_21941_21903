@@ -442,12 +442,9 @@ public class AppGUI {
 						for(int i=0;i<10;i++) {
 							sum = sum+(trav.getTerms_pref()[i]*traveller.getTerms_pref()[i]);
 						}
-						System.out.println(trav.getName()+ " "+ trav.getVisit() + " " + sum);
-						
 						return sum;
 					}))
 					.orElse(null);
-	        System.out.println("*********************************************");
 	        Main.allTravellers.add(traveller);
 	        if(colabTraveller!=null) {
 	        	lblColab.setText(colabTraveller.getVisit());
