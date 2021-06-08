@@ -346,6 +346,8 @@ public class AppGUI {
 	
 	
 	static int flag = 1; //1 is good , 0 is bad
+	static String colabVisit = ""; //community visit
+	static int max = -1; //used for lambda
 	private class LoginAction implements ActionListener {
 		
 		
@@ -435,23 +437,26 @@ public class AppGUI {
 			termsPref[9] = (int) technology.getValue();
 			
 	        traveller.setTerms_pref(termsPref);
-	        Traveller colabTraveller = Main.allTravellers.stream().max(Comparator
-					.comparingInt(trav->{
-						int sum=0;
-						for(int i=0;i<10;i++) {
-							System.out.println(trav.getTerms_pref()[i]);
-						}
-						System.out.println("**********************************");
-						for(int i=0;i<10;i++) {
-							sum = sum+(trav.getTerms_pref()[i]*traveller.getTerms_pref()[i]);
-						}
-						System.out.println(sum);
-						return sum;
-					}))
-					.orElse(null);
+	        
+	        
+	       
+	        Main.allTravellers.stream().forEach((trav)->{
+	        	int sum=0;
+                for(int i=0;i<10;i++) {
+                    sum = sum+(trav.getTerms_pref()[i]*traveller.getTerms_pref()[i]);
+                }
+                System.out.println(trav.getName()+ " "+ trav.getVisit() + " " + sum);
+                if(sum > max) {
+                	max = sum;
+                	colabVisit = trav.getVisit();
+                }
+                
+	        });
+	        System.out.println("*********************************************");
+	        max = -1;
 	        Main.allTravellers.add(traveller);
-	        if(colabTraveller!=null) {
-	        	lblColab.setText(colabTraveller.getVisit());
+	        if(!colabVisit.equals("")) {
+	        	lblColab.setText(colabVisit);
 		        lblColabView.setVisible(true);
 	        }
 	        
